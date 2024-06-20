@@ -194,3 +194,7 @@ Inside `get_page`, track how many times a particular URL was accessed in the key
 Tip: Use [http://slowwly.robertomurray.co.uk](http://slowwly.robertomurray.co.uk) to simulate a slow response and test your caching.
 
 Bonus: implement this use case with decorators.
+
+
+
+## HappyCoding!
