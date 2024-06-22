@@ -7,11 +7,11 @@ present IPs in the collection 'nginx' of the database 'logs'
 from pymongo import MongoClient
 
 
-def log_stats(nginx_collection) -> None:
+def print_nginx_request_logs(nginx_collection):
     """
     log_stats - provides some stats about Nginx logs stored in MongoDB
     Args:
-     - mongo_collection: pymongo collection object
+     - nginx_collection: pymongo collection object
     Return: nothing
     """
     print('{} logs'.format(nginx_collection.count_documents({})))
@@ -26,7 +26,7 @@ def log_stats(nginx_collection) -> None:
     print('{} status check'.format(status_checks_count))
 
 
-def print_top_ip(server_collection):
+def print_top_ips(server_collection):
     """
     print_top_ip - print the top 10 of the most present IPs in the collection
     Args:
@@ -55,11 +55,11 @@ def print_top_ip(server_collection):
 
 def run():
     """
-    Run the script
+    Provides some stats about Nginx logs stored in MongoDB.
     """
     client = MongoClient('mongodb://127.0.0.1:27017')
-    log_stats(client.logs.nginx)
-    print_top_ip(client.logs.nginx)
+    print_nginx_request_logs(client.logs.nginx)
+    print_top_ips(client.logs.nginx)
 
 
 if __name__ == "__main__":
