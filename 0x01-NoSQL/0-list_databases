@@ -1,0 +1,3 @@
+// Script to list all the databases in MongoDB
+
+db.getMongo().getDBNames()
