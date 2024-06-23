@@ -4,7 +4,7 @@
 -- user_id INT
 
 -- Create the stored procedure
-DELIMITER //
+DELIMITER $$
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(IN user_id INT)
 BEGIN
     DECLARE total_score FLOAT;
@@ -22,5 +22,5 @@ BEGIN
     
     -- Update the average_score column for the user
     UPDATE users SET average_score = weighted_average WHERE id = user_id;
-END //
+END $$
 DELIMITER ;
