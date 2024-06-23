@@ -4,23 +4,35 @@
 -- user_id INT
 
 -- Create the stored procedure
+DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUser;
 DELIMITER $$
-CREATE PROCEDURE ComputeAverageWeightedScoreForUser(IN user_id INT)
+CREATE PROCEDURE ComputeAverageWeightedScoreForUser (user_id INT)
 BEGIN
-    DECLARE total_score FLOAT;
-    DECLARE total_weight FLOAT;
-    DECLARE weighted_average FLOAT;
-    
-    -- Calculate the total score and total weight for the user
-    SELECT SUM(c.score * p.weight) INTO total_score, SUM(p.weight) INTO total_weight
-    FROM corrections c
-    JOIN projects p ON c.project_id = p.id
-    WHERE c.user_id = user_id;
-    
-    -- Calculate the weighted average score
-    SET weighted_average = total_score / total_weight;
-    
-    -- Update the average_score column for the user
-    UPDATE users SET average_score = weighted_average WHERE id = user_id;
+    DECLARE total_weighted_score INT DEFAULT 0;
+    DECLARE total_weight INT DEFAULT 0;
+
+    SELECT SUM(corrections.score * projects.weight)
+        INTO total_weighted_score
+        FROM corrections
+            INNER JOIN projects
+                ON corrections.project_id = projects.id
+        WHERE corrections.user_id = user_id;
+
+    SELECT SUM(projects.weight)
+        INTO total_weight
+        FROM corrections
+            INNER JOIN projects
+                ON corrections.project_id = projects.id
+        WHERE corrections.user_id = user_id;
+
+    IF total_weight = 0 THEN
+        UPDATE users
+            SET users.average_score = 0
+            WHERE users.id = user_id;
+    ELSE
+        UPDATE users
+            SET users.average_score = total_weighted_score / total_weight
+            WHERE users.id = user_id;
+    END IF;
 END $$
 DELIMITER ;
