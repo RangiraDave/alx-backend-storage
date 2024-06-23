@@ -5,7 +5,7 @@
 -- The bands should be listed from the longest lifespan to the shortest.
 -- The output should be band_name and lifespan.
 
-SELECT band_name, (IFNULL(split, '2020') -formed) AS lifespan
-FROM metal_bands
-WHERE FIND_IN_SET('Glam rock', IFNULL(styles, '')) > 0
-ORDER BY lifespan DESC;
+SELECT band_name, (IFNULL(split, '2020') - formed) AS lifespan
+    FROM metal_bands
+    WHERE FIND_IN_SET('Glam rock', IFNULL(style, "")) > 0
+    ORDER BY lifespan DESC;
